@@ -46,7 +46,7 @@
                     </button>
 
                     <a class="navbar-brand" href="index.html">
-                        <img src="images/gallery/logo1.png" alt="Logo" width="100" height="100" class="logo">
+                        <img src="images/gallery/logo1.png" alt="Logo" width="60" height="60" class="logo">
                         <strong><span>AIKMCC</span> Hyderabad</strong>
                     </a>
                     <div class="d-lg-none">
@@ -86,39 +86,38 @@
                 </div>
             </nav>
 
-            <section id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <div class="image-container">
-                            <img src="images/slideshow/TLcm.jpg" class="d-block w-100" alt="Slide 1">
-                            <div class="overlay">
-                                <h2 class="animated-text">Welcome to AIKMCC Hyderabad</h2>
-                                <a href="about.html" class="animated-button">Read about AIKMCC Hyd</a>
-                            </div>
+            <section id="heroSlider" class="custom-slider">
+                <div class="slider-track">
+                    <div class="slide active">
+                        <img src="images/slideshow/slideshow1.jpg" class="slide-image" alt="Slide 1">
+                        <div class="slide-content">
+                            <h2 class="slide-title animate-fade-up">Welcome to AIKMCC Hyderabad</h2>
+                            <a href="about.html" class="slide-cta animate-fade-in">Read about AIKMCC Hyd</a>
                         </div>
                     </div>
             
-                    <div class="carousel-item">
-                        <div class="image-container">
-                            <img src="images/service/service2a.jpg" class="d-block w-100" alt="Slide 2">
-                            <div class="overlay">
-                                <h2 class="animated-text">Welcome to AIKMCC Hyderabad</h2>
-                                <a href="about.html" class="animated-button">Read about AIKMCC Hyd</a>
-                            </div>
+                    <div class="slide">
+                        <img src="images/gallery/11.jpg" class="slide-image" alt="Slide 2">
+                        <div class="slide-content">
+                            <h2 class="slide-title animate-fade-up">Join Our Mission</h2>
+                            <a href="about.html" class="slide-cta animate-fade-in">Learn More</a>
                         </div>
                     </div>
-            
-                    
+                    <div class="slide">
+                        <img src="images/slideshow/Award1.jpg" class="slide-image" alt="Slide 2">
+                        <div class="slide-content">
+                            <h2 class="slide-title animate-fade-up">Join Our Mission</h2>
+                            <a href="about.html" class="slide-cta animate-fade-in">Learn More</a>
+                        </div>
+                    </div>
                 </div>
             
-                <!-- Carousel Controls -->
-                <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
+                <!-- Slider Controls -->
+                <button class="slider-nav prev" aria-label="Previous slide">
+                    <span class="nav-arrow">&larr;</span>
                 </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
+                <button class="slider-nav next" aria-label="Next slide">
+                    <span class="nav-arrow">&rarr;</span>
                 </button>
             </section>
             
@@ -175,20 +174,61 @@
 
         <!-- JAVASCRIPT FILES -->
         <script>
-            $(document).ready(function(){
-                $('.slick-carousel').slick({
-                    autoplay: true,         // Enables automatic sliding
-                    autoplaySpeed: 3000,    // 3 seconds per slide
-                    dots: true,             // Adds navigation dots
-                    arrows: true,           // Adds next/prev arrows
-                    fade: true,             // Smooth fade effect
-                    speed: 800,             // Transition speed
-                    infinite: true,         // Infinite looping
-                    slidesToShow: 1,        // Shows one slide at a time
-                    slidesToScroll: 1
+            document.addEventListener('DOMContentLoaded', function() {
+                const slider = document.querySelector('.custom-slider');
+                const track = document.querySelector('.slider-track');
+                const slides = document.querySelectorAll('.slide');
+                const prevButton = document.querySelector('.prev');
+                const nextButton = document.querySelector('.next');
+                let currentIndex = 0;
+            
+                function updateSlider() {
+                    slides.forEach((slide, index) => {
+                        slide.classList.remove('active');
+                        if(index === currentIndex) {
+                            slide.classList.add('active');
+                        }
+                    });
+                }
+            
+                function nextSlide() {
+                    currentIndex = (currentIndex + 1) % slides.length;
+                    updateSlider();
+                }
+            
+                function prevSlide() {
+                    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+                    updateSlider();
+                }
+            
+                // Auto-advance every 5 seconds
+                let autoSlide = setInterval(nextSlide, 5000);
+            
+                // Pause on hover
+                slider.addEventListener('mouseenter', () => clearInterval(autoSlide));
+                slider.addEventListener('mouseleave', () => {
+                    autoSlide = setInterval(nextSlide, 5000);
+                });
+            
+                // Control buttons
+                nextButton.addEventListener('click', nextSlide);
+                prevButton.addEventListener('click', prevSlide);
+            
+                // Touch support
+                let touchStartX = 0;
+                let touchEndX = 0;
+            
+                slider.addEventListener('touchstart', e => {
+                    touchStartX = e.changedTouches[0].screenX;
+                });
+            
+                slider.addEventListener('touchend', e => {
+                    touchEndX = e.changedTouches[0].screenX;
+                    if (touchStartX - touchEndX > 50) nextSlide();
+                    if (touchEndX - touchStartX > 50) prevSlide();
                 });
             });
-        </script>
+            </script>
             
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         
